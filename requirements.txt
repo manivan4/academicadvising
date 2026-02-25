@@ -1,0 +1,18 @@
+langchain
+langchain-ollama
+langchain-huggingface
+sentence-transformers
+langchain-community
+langchain-core
+langchain-chroma
+langchain-groq
+chromadb
+pypdf
+ragas
+streamlit
+python-dotenv
+tiktoken
+# FastAPI backend
+fastapi
+uvicorn[standard]
+python-multipart
