@@ -24,6 +24,13 @@ ENV/
 # Vector database / ChromaDB
 chroma_db/
 *.db
+data/*
+!data/raw_data/
+!data/vectordb/
+data/raw_data/*
+!data/raw_data/.gitkeep
+data/vectordb/*
+!data/vectordb/.gitkeep
 
 # Jupyter
 .ipynb_checkpoints/
