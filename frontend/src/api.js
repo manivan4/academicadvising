@@ -17,14 +17,14 @@ export async function ingestFiles(files) {
   return res.json(); // { message, files_saved }
 }
 
-export async function sendChat(question, transcriptData, chatHistory) {
+export async function sendChat(question, transcriptData, history) {
   const res = await fetch(`${API_BASE}/chat`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       question,
       transcript_data: transcriptData,
-      chat_history: chatHistory,
+      chat_history: history,
     }),
   });
   if (!res.ok) {
