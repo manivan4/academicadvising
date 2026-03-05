@@ -1,12 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
 import { getStatus, ingestFiles } from '../api';
+import { processTranscriptFile } from '../pdfRedactor';
 
-export default function Sidebar() {
+export default function Sidebar({ onTranscriptRedacted }) {
   const [dbReady, setDbReady] = useState(null);
   const [pendingFiles, setPendingFiles] = useState([]);
   const [ingesting, setIngesting] = useState(false);
   const [ingestMsg, setIngestMsg] = useState(null); // { type: 'success'|'error', text }
-  const inputRef = useRef();
+  
+  const [transcriptName, setTranscriptName] = useState(null);
+  const [transcriptProcessing, setTranscriptProcessing] = useState(false);
+  const [transcriptError, setTranscriptError] = useState(null);
+
+  const pendingFilesRef = useRef();
+  const transcriptRef = useRef();
 
   // Poll DB status every 5 s
   useEffect(() => {
@@ -35,6 +42,26 @@ export default function Sidebar() {
       setIngestMsg({ type: 'error', text: err.message });
     } finally {
       setIngesting(false);
+    }
+  };
+
+  const handleTranscriptFile = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    
+    setTranscriptError(null);
+    setTranscriptName(file.name);
+    setTranscriptProcessing(true);
+    e.target.value = '';
+
+    try {
+      const result = await processTranscriptFile(file);
+      onTranscriptRedacted(result.redactedText);
+    } catch (err) {
+      setTranscriptError(err.message || 'Failed to parse PDF.');
+      setTranscriptName(null);
+    } finally {
+      setTranscriptProcessing(false);
     }
   };
 
@@ -69,10 +96,10 @@ export default function Sidebar() {
         <p className="sidebar-label">Knowledge Base</p>
         <div
           className="upload-zone"
-          onClick={() => inputRef.current?.click()}
+          onClick={() => pendingFilesRef.current?.click()}
         >
           <input
-            ref={inputRef}
+            ref={pendingFilesRef}
             type="file"
             accept=".pdf,.txt"
             multiple
@@ -100,6 +127,32 @@ export default function Sidebar() {
             {ingestMsg.text}
           </div>
         )}
+      </div>
+
+      {/* Transcript Upload */}
+      <div className="sidebar-section">
+        <p className="sidebar-label">Your Transcript</p>
+        <div
+          className="upload-zone"
+          onClick={() => transcriptRef.current?.click()}
+          style={transcriptName && !transcriptError ? { borderColor: 'var(--green-500)', background: 'rgba(34, 197, 94, 0.05)' } : {}}
+        >
+          <input
+            ref={transcriptRef}
+            type="file"
+            accept=".pdf"
+            onChange={handleTranscriptFile}
+            style={{ display: 'none' }}
+          />
+          {transcriptProcessing ? (
+            <><span className="spinner" /> Anonymizing...</>
+          ) : transcriptName && !transcriptError ? (
+            `🔒 ${transcriptName}`
+          ) : (
+            '📄 Click to upload Transcript'
+          )}
+        </div>
+        {transcriptError && <div className="error-msg" style={{fontSize: '11px', marginTop: '6px'}}>{transcriptError}</div>}
       </div>
     </aside>
   );

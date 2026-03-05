@@ -143,9 +143,12 @@ def chat(req: ChatRequest):
 
     try:
         transcript_len = len(req.transcript_data)
-        transcript_preview = req.transcript_data[:120].replace("\n", " ")
-        print(f"\n[TRANSCRIPT] 📄 Length: {transcript_len} chars | Preview: '{transcript_preview}...'")
-
+        print("\n" + "="*60)
+        print(f"[TRANSCRIPT VERIFICATION] length: {transcript_len} chars")
+        print("Below is the exact transcript text being sent to the AI:")
+        print("-" * 60)
+        print(req.transcript_data)
+        print("="*60 + "\n")
         start = time.time()
         answer = rag_chain.invoke({
             "chat_history": lc_history,

@@ -111,19 +111,8 @@ def get_rag_chain():
     contextualize_q_chain = contextualize_q_prompt | llm | StrOutputParser()
 
     # 2. Answer Chain
-    system_prompt = """Role: You are the Purdue Undergraduate Academic Advising Assistant. Your specialized purpose is to help current Purdue students determine their eligibility to Change their Degree Objective (CODO) into the Computer Science major. You must act as a professional, objective, and supportive academic advisor.
-
-Objective: Collect specific academic data points from the student to provide a binary "Eligible" or "Ineligible" status, while adding nuance regarding "Highest Consideration" vs. "Space Available" status.
-
-Knowledge Base (STRICTLY use this provided context to answer):
-{context}
-
-Student Transcript Information:
-{transcript_data}
-
-Tone Guidelines:
-- Use professional terminology. Ask one question at a time.
-- Remind student your assessment is an eligibility check, not a final admission decision."""
+    with open("system_prompt.txt", "r", encoding="utf-8") as f:
+        system_prompt = f.read()
 
     qa_prompt = ChatPromptTemplate.from_messages(
         [
@@ -147,6 +136,17 @@ Tone Guidelines:
         print(f"[DEBUG] ✅ Retrieved {len(docs)} documents.")
         return docs
 
+    def log_prompt(prompt_value):
+        print("\n" + "="*50)
+        print("[DEBUG] 📨 FINAL PROMPT SENT TO LLM:")
+        print("="*50)
+        # Print the system message (which is the first message in the prompt)
+        messages = prompt_value.to_messages()
+        if messages:
+             print(messages[0].content)
+        print("="*50 + "\n")
+        return prompt_value
+
     # Constructing the full chain
     def contextualized_question(input_dict):
         if input_dict.get("chat_history"):
@@ -168,6 +168,7 @@ Tone Guidelines:
             )
         )
         | qa_prompt
+        | log_prompt
         | llm
         | StrOutputParser()
     )

@@ -50,6 +50,28 @@ documents.
 
 ---
 
+## Application Workflow
+
+1. **Local Anonymization**: The student uploads their Purdue transcript PDF in
+   the "Anonymize" tab. The browser extracts the text and strips out personally
+   identifiable information (PII) like names, emails, and phone numbers locally.
+2. **Context Injection**: The anonymized transcript is loaded into the chat
+   interface.
+3. **Retrieval (RAG)**: When the student asks about their CODO eligibility, the
+   FastAPI backend converts their query into a vector and searches the local
+   ChromaDB for the most relevant official CODO policy documents.
+4. **LLM Generation**: The backend constructs a highly specific prompt
+   containing:
+   - The retrieved CODO policy rules.
+   - The student's anonymized transcript data.
+   - Strict instructions to evaluate what requirements are met, what are
+     missing, and calculate an overall "Eligible" or "Not Eligible" status.
+5. **Response**: The Groq hardware accelerates the LLM inference, instantly
+   returning the custom analysis and actionable next steps back to the student's
+   chat UI.
+
+---
+
 ## Prerequisites
 
 - **Python 3.10+**
@@ -125,6 +147,11 @@ To populate your local knowledge base:
 1. Obtain the official Purdue CODO policy source documents (PDFs or `.txt`
    files).
 2. Place these documents into the empty `data/raw_data/` directory.
+
+Note: Logan created a doc in the google drive folder titled CS CODO Requirements
+Knowledge Base. If you copy and paste that into a text file and place it in the
+data/raw_data/ folder, it will be used as the knowledge base. Feel free to tweak
+the knowledge base to get more accurate reponses.
 
 You can also use the knowledge base management script:
 
@@ -230,6 +257,80 @@ Purdue-CS-CODO-RAG/
 │
 └── tools/                  # Debug and inspection utilities
 ```
+
+---
+
+## Tuning the Model
+
+If you'd like to tune the RAG pipeline or experiment with different prompts,
+embeddings, or parameters, here is a guide on exactly where to make those
+changes:
+
+### 1. System Prompts
+
+**Files:** `rag_pipeline.py` and `system_prompt.txt` The AI's personality and
+the instructions for generating an answer based on context are easily editable.
+
+- **Contextualization Prompt (`rag_pipeline.py` Line 99):** This dictates how
+  the bot rewrites a follow-up question (e.g. "What about for Computer
+  Engineering?") into a standalone question (using chat history) before querying
+  the database.
+- **Generation System Prompt (`system_prompt.txt`):** This is the master prompt.
+  It casts the LLM as the "Purdue Undergraduate Academic Advising Assistant" and
+  establishes tone rules. Modify this file to completely change how the bot
+  shapes its final answer.
+
+> **Note:** Because `system_prompt.txt` is read once on startup and Uvicorn's
+> `--reload` flag only watches python files by default, you must **manually
+> restart the FastAPI backend process** for your prompt changes to take effect.
+
+### 2. Changing the Knowledge Base
+
+You can add new documents to the knowledge base by adding them to the
+`data/raw_data/` directory and running the `ingest.py` script. You can also
+change files and re-ingest to see how the model's responses change.
+
+### 3. Vector Database Chunking Strategy
+
+**File:** `ingest.py` When documents are parsed, they are split into overlapping
+chunks for vectorization. Smaller chunks provide more dense semantic matching,
+while larger chunks provide broader context to the LLM.
+
+- **Line 15 & 16:** `CHUNK_SIZE = 1000` and `CHUNK_OVERLAP = 100` controls the
+  text splitter.
+
+### 4. Embedding Model
+
+**File:** `ingest.py` AND `rag_pipeline.py` We currently use the fast, local
+`all-MiniLM-L6-v2` HuggingFace embedding model.
+
+- **`ingest.py` (Line 19):** Change the `model_name` argument to use a different
+  embedding model for generating the chroma database.
+- **`rag_pipeline.py` (Line 68):** Change the `model_name` here as well so the
+  retriever maps user questions to the same vector space.
+
+### 5. LLM Selection (Groq Cloud)
+
+**File:** `rag_pipeline.py` The pipeline is currently wired to Groq for
+near-instant inference.
+
+- **Line 61 & 62:** Define the target Groq model strings. We default to
+  `llama-3.1-8b-instant`.
+- **Line 90:** The `ChatGroq()` class is instantiated here. You can swap this to
+  OpenAI, Anthropic, or local Ollama classes if desired. You can also edit the
+  `temperature` here.
+
+### 6. Retrieval Search Strategy
+
+**File:** `rag_pipeline.py` We retrieve a set of relevant document chunks before
+generation. We currently use Maximal Marginal Relevance (MMR) search instead of
+standard similarity search to enforce diversity in the retrieved chunks.
+
+- **Line 72-74:** The base retriever is defined. You can change
+  `search_type="mmr"` back to standard `"similarity"`.
+- **Line 74:** `{"k": 5, "fetch_k": 20}` means it fetches 20 documents via
+  similarity search, then uses MMR to narrow it down to the 5 most diverse
+  chunks to pass to the context window.
 
 ---
 
