@@ -15,7 +15,7 @@ import {
   Zap,
 } from 'lucide-react';
 import purdueIcon from './assets/purdue-icon.png';
-import { getStatus, ingestFiles, sendChat } from './api';
+import { getStatus, sendChat } from './api';
 import { processTranscriptFile } from './pdfRedactor';
 
 const DEFAULT_TRANSCRIPT = 'No transcript provided.';
@@ -57,11 +57,8 @@ export default function App() {
   const [error, setError] = useState('');
 
   const [dbReady, setDbReady] = useState(null);
-  const [ingesting, setIngesting] = useState(false);
-  const [ingestMsg, setIngestMsg] = useState('');
 
   const transcriptRef = useRef(null);
-  const kbRef = useRef(null);
   const chatBottomRef = useRef(null);
 
   useEffect(() => {
@@ -124,6 +121,24 @@ export default function App() {
     }
   };
 
+  // Auto-trigger eligibility analysis immediately after transcript upload.
+  // We pass freshTranscript directly to sendChat instead of reading from
+  // transcriptData state, which may not have updated yet (stale closure bug).
+  const autoAnalyzeTranscript = async (freshTranscript) => {
+    const question = 'Am I eligible to CODO into Computer Science?';
+    setLoading(true);
+    setShowChat(true);
+    addMessage('user', question);
+    try {
+      const res = await sendChat(question, freshTranscript, []);
+      addMessage('assistant', res.answer, res.latency_ms);
+    } catch (err) {
+      setError(err.message || 'Chat request failed.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleTranscriptFile = async (event) => {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -139,10 +154,11 @@ export default function App() {
 
     try {
       const parsed = await processTranscriptFile(file);
-      setTranscriptData(parsed.redactedText || DEFAULT_TRANSCRIPT);
+      const freshTranscript = parsed.redactedText || DEFAULT_TRANSCRIPT;
+      setTranscriptData(freshTranscript);
       setShowTranscriptModal(false);
-      setShowChat(true);
-      addMessage('assistant', `Transcript loaded from ${file.name}. Ask your question when ready.`);
+      // Auto-send analysis using the fresh transcript text directly
+      await autoAnalyzeTranscript(freshTranscript);
     } catch (err) {
       setError(err.message || 'Failed to process transcript PDF.');
     } finally {
@@ -150,25 +166,7 @@ export default function App() {
     }
   };
 
-  const handleIngestFiles = async (event) => {
-    const files = Array.from(event.target.files || []);
-    if (!files.length) return;
 
-    setIngesting(true);
-    setIngestMsg('');
-    setError('');
-
-    try {
-      const res = await ingestFiles(files);
-      setIngestMsg(res.message || `Ingested ${files.length} files.`);
-      setDbReady(true);
-    } catch (err) {
-      setIngestMsg(err.message || 'Ingest failed.');
-    } finally {
-      setIngesting(false);
-      event.target.value = '';
-    }
-  };
 
   const handleRestartChat = () => {
     setShowChat(false);
@@ -194,22 +192,7 @@ export default function App() {
             {dbReady === null ? 'Checking DB…' : dbReady ? 'DB Ready' : 'DB Not Ready'}
           </div>
 
-          <input
-            ref={kbRef}
-            type="file"
-            accept=".pdf,.txt"
-            multiple
-            className="hidden"
-            onChange={handleIngestFiles}
-          />
-          <button
-            onClick={() => kbRef.current?.click()}
-            disabled={ingesting}
-            className="text-white/60 hover:text-white transition-colors flex items-center gap-2 disabled:opacity-40"
-          >
-            <Zap className="w-4 h-4" />
-            {ingesting ? 'Ingesting…' : 'Upload KB'}
-          </button>
+
 
           <button
             onClick={() => setShowRequirements(true)}
@@ -247,11 +230,7 @@ export default function App() {
             <p className="text-white/50 text-lg">Upload your transcript and ask eligibility questions.</p>
           </div>
 
-          {ingestMsg && (
-            <div className="w-full px-4 py-3 rounded-2xl border border-[#4075C9]/40 bg-[#4075C9]/10 text-[#9ec2ff] text-sm">
-              {ingestMsg}
-            </div>
-          )}
+
 
           {showChat && (
             <div className="w-full space-y-4 max-h-[45vh] overflow-y-auto pr-1">

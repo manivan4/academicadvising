@@ -29,6 +29,7 @@ data/*
 !data/vectordb/
 data/raw_data/*
 !data/raw_data/.gitkeep
+!data/raw_data/codo_requirements.txt
 data/vectordb/*
 !data/vectordb/.gitkeep
 
@@ -50,3 +51,6 @@ Thumbs.db
 .idea/
 *.suo
 *.user
+
+# Local developer notes
+bugs.txt
