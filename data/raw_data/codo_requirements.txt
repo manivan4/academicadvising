@@ -1,0 +1,143 @@
+Knowledge Base: Purdue CS CODO Requirements (2025-2026)
+
+===========================================================================
+1. Executive Summary & Policy Overview
+===========================================================================
+Space-Restricted Status: Computer Science is a space-restricted program.
+Meeting the minimum requirements does NOT guarantee admission.
+
+Admissions Basis: Decisions are made on a Space Available Basis Only,
+following a holistic academic review.
+
+Decision Finality: All CODO decisions are final and cannot be appealed.
+
+Catalog Term Logic: Students are bound by the requirements of their
+"Catalog Term" (the semester they started at Purdue). This document
+covers current standards (2024-2026).
+
+===========================================================================
+2. General Eligibility Requirements ("Gatekeeper" Criteria)
+===========================================================================
+ALL of the following must be true before course grades are even considered.
+Failure to meet any one of these makes a student immediately ineligible.
+
+  - Minimum Semesters: Must have completed at least 1 semester at Purdue
+    West Lafayette campus.
+  - Minimum Credits: Must have completed at least 12 graded credit hours
+    at Purdue West Lafayette campus.
+  - Minimum Cumulative GPA: 2.75 or higher.
+  - Academic Standing: Student must NOT be on academic probation.
+
+===========================================================================
+3. Required Courses (ALL must be completed with the required grade)
+===========================================================================
+
+--- A. Computer Science (MANDATORY — NO SUBSTITUTES) ---
+
+CS 18000 — Problem Solving and Object-Oriented Programming
+  Required grade: B or better.
+  THIS COURSE IS MANDATORY. A student who has not taken CS 18000, or who
+  has taken it but earned below a B, does NOT meet this requirement.
+  There is no substitute course for CS 18000.
+  Note: Non-CS majors can typically only enroll in CS 18000 during Spring
+  or Summer semesters.
+  "Highest Consideration" threshold: A- or higher.
+
+--- B. Mathematics (ONE APPROVED COURSE REQUIRED) ---
+
+A student needs a B or better in ANY ONE of the following approved courses.
+They do NOT need one from each subject — just one course from this list:
+
+  MA 16100  (Anlytc Geomtry & Calc I)
+  MA 16500  (Calculus I)
+  MA 16200  (Anlytc Geomtry & Calc II)
+  MA 16600  (Calculus II)
+  MA 26100  (Multivariate Calculus)
+  MA 27101  (Honors Calculus III)
+  MA 26500  (Linear Algebra)
+  MA 35100  (Elementary Linear Algebra)
+
+  NOT APPROVED: MA 15800, MA 16010, MA 16020 do NOT satisfy this requirement.
+
+  Example A: Student has B in MA 16500 → Mathematics MET.
+  Example B: Student has B in MA 26500 only → Mathematics MET.
+  Example C: Student has only MA 15800 → Mathematics NOT MET (invalid course).
+
+
+===========================================================================
+4. Competitive Thresholds ("Highest Consideration")
+===========================================================================
+Due to high competition, students who only meet the minimums are frequently
+denied. To be in the most competitive tier, a student should have ALL of:
+
+  - CS 18000 grade: A- or higher.
+  - All math course grades: B or higher.
+  - Cumulative GPA: 3.0 or higher.
+
+===========================================================================
+5. Strict Academic Rules & Limitations
+===========================================================================
+Rule of Two: Only the FIRST or SECOND attempt of any required CS or Math
+course will be considered for CODO. A "W" (Withdrawal) counts as an
+attempt. If a student fails to earn a B within two attempts at a required
+course and has no passing alternative, they are PERMANENTLY INELIGIBLE
+to CODO into CS.
+
+Purdue Campus Requirement: All CS and Math courses must be taken for a
+letter grade on a Purdue campus. Transfer courses are not accepted.
+
+No Supplemental Data: The review committee does not consider personal
+projects, resumes, or letters of recommendation. The decision is purely
+academic.
+
+===========================================================================
+6. Deadlines & Timeline
+===========================================================================
+Application Deadline: 5:00 PM on the Thursday of Finals Week for the
+Fall, Spring, and Summer terms.
+
+Submission Process: Students must contact their current academic advisor
+to initiate the CODO request via the "Curricular Change Request" (CCR)
+system.
+
+Review Period: Applications are evaluated the week following finals after
+grades are posted.
+
+Notification: Students are notified of the decision via their official
+Purdue email.
+
+===========================================================================
+7. Strategic Guidance for Ineligible Students
+===========================================================================
+If a student does not meet the CODO requirements, suggest these paths:
+
+  - CS Minor: Requires a C or better in CS 18000. Allows access to some
+    upper-level CS courses in "off-peak" semesters.
+  - Data Science / Artificial Intelligence: Similar requirements but
+    slightly different space availability profiles.
+  - Applied Statistics: For students interested in the mathematical side
+    of computing.
+
+===========================================================================
+8. Evaluation Logic (Internal Checklist for the AI)
+===========================================================================
+When a transcript is provided, check each item in order. Mark INELIGIBLE
+the moment any item fails — do NOT override this with a passing status.
+
+  Step 1 — GPA: Is cumulative GPA >= 2.75? If not → INELIGIBLE.
+  Step 2 — Semesters/Credits: Has the student completed 1 semester and
+            12+ graded credits at Purdue WL? If not → INELIGIBLE.
+  Step 3 — Academic Standing: Is the student NOT on probation? If unsure,
+            note as unknown.
+  Step 4 — CS 18000: Does the transcript show CS 18000 with a B or better?
+            If CS 18000 is absent OR grade is below B → INELIGIBLE.
+  Step 5 — Mathematics: Does the transcript show a B or better in ANY ONE of:
+            MA 16100, MA 16500, MA 16200, MA 16600, MA 26100, MA 27101,
+            MA 26500, MA 35100? Only ONE of these courses is needed.
+            If no approved course has a B or better → INELIGIBLE.
+
+  FINAL STATUS: ELIGIBLE only if ALL 5 steps pass. NOT ELIGIBLE otherwise.
+
+  Tier Classification (if ELIGIBLE):
+    Tier 1 — Highest Consideration: A- in CS 18000 AND GPA >= 3.0.
+    Tier 2 — Meets Minimums: B in CS 18000 AND GPA >= 2.75 (but < 3.0).
