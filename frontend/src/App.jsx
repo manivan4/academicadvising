@@ -396,7 +396,12 @@ export default function App() {
             </div>
             <div className="text-center">
               <h2 className="text-3xl font-semibold text-white mb-2">Upload Your Transcript</h2>
-              <p className="text-white/50">Upload a PDF to include transcript context in chat.</p>
+              <p className="text-white/50 mb-3">Upload a PDF to include transcript context in chat.</p>
+              <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3">
+                <p className="text-yellow-200/90 text-sm">
+                  Transferring into CS is a very competitive process, and responses from the AI do not guarantee your placement into CS.
+                </p>
+              </div>
             </div>
             <input
               type="file"
