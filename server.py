@@ -46,9 +46,14 @@ app = FastAPI(title="CODO Advisor API", lifespan=lifespan)
 # ---------------------------------------------------------------------------
 # CORS — allow the Vite dev server (port 5173) and any localhost origin
 # ---------------------------------------------------------------------------
+origins = ["http://localhost:5173", "http://127.0.0.1:5173"]
+frontend_url = os.getenv("FRONTEND_URL")
+if frontend_url:
+    origins.append(frontend_url)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
