@@ -15,8 +15,11 @@ from typing import List
 from dotenv import load_dotenv
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+<<<<<<< HEAD
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
+=======
+>>>>>>> origin/main
 from pydantic import BaseModel
 
 load_dotenv()
@@ -167,6 +170,7 @@ def chat(req: ChatRequest):
         return ChatResponse(answer=answer, latency_ms=round(elapsed_ms, 1))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+<<<<<<< HEAD
 
 # ---------------------------------------------------------------------------
 # Serve React Frontend (Dynamic static mounting for Hugging Face Spaces Docker)
@@ -185,3 +189,5 @@ if os.path.exists(frontend_dist):
         
         # Fallback to index.html for client-side routing
         return FileResponse(html_path)
+=======
+>>>>>>> origin/main
