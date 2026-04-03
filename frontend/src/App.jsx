@@ -177,12 +177,6 @@ export default function App() {
 
   return (
     <div className="size-full bg-black relative overflow-hidden flex flex-col">
-<<<<<<< HEAD
-      <div className="bg-[#4075C9] text-white text-center py-1.5 text-sm font-medium">
-        Leave your feedback at <a href="https://bit.ly/codobot" target="_blank" rel="noreferrer" className="underline hover:text-white/80 transition-colors">bit.ly/codobot</a>
-      </div>
-=======
->>>>>>> origin/main
       <header className="bg-black px-6 py-4 flex items-center justify-between border-b-2 border-[#4075C9]">
         <div className="flex items-center gap-4">
           <img src={purdueIcon} alt="Purdue P" className="w-12 h-12 object-contain" />
