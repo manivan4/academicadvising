@@ -48,8 +48,7 @@ export default function App() {
   const [showCodoInfo, setShowCodoInfo] = useState(false);
   const [showBotInfo, setShowBotInfo] = useState(false);
   const [showRequirements, setShowRequirements] = useState(false);
-  const [showDisclaimer, setShowDisclaimer] = useState(true);
-  const [showTranscriptModal, setShowTranscriptModal] = useState(false);
+  const [showTranscriptModal, setShowTranscriptModal] = useState(true);
   const [showTranscriptSteps, setShowTranscriptSteps] = useState(false);
   const [showContactModal, setShowContactModal] = useState(false);
   const [uploadedFile, setUploadedFile] = useState(null);
@@ -178,6 +177,9 @@ export default function App() {
 
   return (
     <div className="size-full bg-black relative overflow-hidden flex flex-col">
+      <div className="bg-[#4075C9] text-white text-center py-1.5 text-sm font-medium">
+        Leave your feedback at <a href="https://bit.ly/codobot" target="_blank" rel="noreferrer" className="underline hover:text-white/80 transition-colors">bit.ly/codobot</a>
+      </div>
       <header className="bg-black px-6 py-4 flex items-center justify-between border-b-2 border-[#4075C9]">
         <div className="flex items-center gap-4">
           <img src={purdueIcon} alt="Purdue P" className="w-12 h-12 object-contain" />
@@ -397,7 +399,12 @@ export default function App() {
             </div>
             <div className="text-center">
               <h2 className="text-3xl font-semibold text-white mb-2">Upload Your Transcript</h2>
-              <p className="text-white/50">Upload a PDF to include transcript context in chat.</p>
+              <p className="text-white/50 mb-3">Upload a PDF to include transcript context in chat.</p>
+              <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3">
+                <p className="text-yellow-200/90 text-sm">
+                  Transferring into CS is a very competitive process, and responses from the AI do not guarantee your placement into CS.
+                </p>
+              </div>
             </div>
             <input
               type="file"
@@ -473,37 +480,6 @@ export default function App() {
                 csug@purdue.edu
               </a>
             </div>
-          </div>
-        </Modal>
-      )}
-
-      {showDisclaimer && (
-        <Modal onClose={() => {
-          setShowDisclaimer(false);
-          setShowTranscriptModal(true);
-        }} maxWidth="max-w-md">
-          <div className="flex flex-col items-center gap-6">
-            <div className="w-16 h-16 rounded-2xl bg-[#4075C9] flex items-center justify-center shadow-xl">
-              <span className="text-3xl">⚠️</span>
-            </div>
-            <div className="text-center space-y-4">
-              <h2 className="text-3xl font-semibold text-white">Important Notice</h2>
-              <p className="text-white/70 text-base leading-relaxed">
-                CODOing into Computer Science is highly competitive. Meeting the minimum requirements <strong className="text-[#9ec2ff]">does not guarantee admission</strong> into the major.
-              </p>
-              <p className="text-white/70 text-base leading-relaxed">
-                This AI tool is a helpful guide based on official policy, but it <strong className="text-[#9ec2ff]">cannot provide an official decision</strong> on your CODO status.
-              </p>
-            </div>
-            <button
-              onClick={() => {
-                setShowDisclaimer(false);
-                setShowTranscriptModal(true);
-              }}
-              className="w-full px-6 py-4 bg-[#4075C9] hover:bg-[#3065B9] text-white rounded-2xl transition-all cursor-pointer shadow-lg font-semibold text-lg"
-            >
-              I Understand
-            </button>
           </div>
         </Modal>
       )}
